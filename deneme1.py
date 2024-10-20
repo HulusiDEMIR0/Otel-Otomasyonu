@@ -32,6 +32,7 @@ class Person(object):
     def display(self):
         print(self.name)
         print(self.idnumber)
+        ymc=5
 
 # Child class
 class Employee(Person):

@@ -1,8 +1,10 @@
 class Ramada_PLaza:
 
-    def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad):
+    def __init__(self,müsteri_tipi,kapasite,oda_tipi,oda_sayisi,müsteri_sayisi,ad):
         self.müsteri_tipi = müsteri_tipi
+        self.kapasite = kapasite
         self.oda_tipi = oda_tipi
+        self.oda_sayisi = oda_sayisi
         self.müsteri_sayisi = müsteri_sayisi
         self.ad = ad
 
@@ -98,7 +100,6 @@ class Ramada_PLaza:
                     
                     else: 
                         print("calisan yakini degilsiniz **")
-             
                         müsteri_tipi = "normal"
                         if  oda_tipi == "kral_dairesi":
                             fiyat = normal_müsteri[2]
@@ -108,14 +109,14 @@ class Ramada_PLaza:
                             fiyat = normal_müsteri[0]
 
                     fiyat = fiyat * gün_sayisi 
-
+                
                 return fiyat
         return -1
     
     def calisan_kontrol(self,ad,calisan_liste):
 
        for liste in calisan_liste:
-           if ad in liste:
+            if ad in liste:
                return True
 
 
@@ -132,7 +133,8 @@ class Ramada_Altin(Ramada_PLaza):
 
     # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
 
-    calisan_liste = [["Ali Yılmaz", "Ayşe Kara", "Ahmet Demir"],["Zeynep Çelik", "Mehmet Yıldız", "Elif Aydın"],["Cem Şahin", "Fatma Öz", "Can Kurt"] ] # ali (calisan) , ayse ahmet (alin yakınları)
+    calisan_liste =  [["Ali Yılmaz", "Ayşe Kara", "Ahmet Demir"],["Zeynep Çelik", "Mehmet Yıldız", "Elif Aydın"],["Cem Şahin", "Fatma Öz", "Can Kurt"] ]
+    # ali (calisan) , ayse ahmet (alin yakınları)
 
     müsteri_listesi = [] # normal müsteri listesi
 
@@ -153,9 +155,11 @@ class Ramada_Altin(Ramada_PLaza):
    
     def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi,gün_sayisi):
 
-        super().__init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad)
-
         self.kat_numarasi = kat_numarasi
+        self.müsteri_sayisi = müsteri_sayisi
+        self.ad = ad
+        self.oda_tipi = oda_tipi
+        self.müsteri_tipi = müsteri_tipi
         self.gün_sayisi = gün_sayisi
 
     def kayit_ekle(self):
@@ -238,7 +242,6 @@ class Ramada_Altin(Ramada_PLaza):
         else:
         
             print(f"sayin {self.ad} ödenemiz gereken tutar {self.ödenecek_tutar}" )
- 
 
 #  def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi,gün_sayisi):
           

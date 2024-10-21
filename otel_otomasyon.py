@@ -98,9 +98,18 @@ class Ramada_PLaza:
                         elif oda_tipi == "ikili_yatak" :
                             fiyat = calisan_müsteri[0]
                     
-                        fiyat = fiyat * gün_sayisi 
                     else: 
                         print("calisan yakini degilsiniz **")
+             
+                        müsteri_tipi = "normal"
+                        if  oda_tipi == "kral_dairesi":
+                            fiyat = normal_müsteri[2]
+                        elif oda_tipi == "üclü_yatak":
+                            fiyat = normal_müsteri[1]
+                        elif oda_tipi == "ikili_yatak" :
+                            fiyat = normal_müsteri[0]
+
+                    fiyat = fiyat * gün_sayisi 
 
                 return fiyat
         return -1
@@ -125,7 +134,7 @@ class Ramada_Altin(Ramada_PLaza):
 
     # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
 
-    calisan_liste = [  ["Ali", "Ayşe", "Ahmet"],["Zeynep", "Mehmet", "Elif"],["Cem", "Fatma", "Can"]] # ali (calisan) , ayse ahmet (alin yakınları)
+    calisan_liste = [["Ali Yılmaz", "Ayşe Kara", "Ahmet Demir"],["Zeynep Çelik", "Mehmet Yıldız", "Elif Aydın"],["Cem Şahin", "Fatma Öz", "Can Kurt"] ] # ali (calisan) , ayse ahmet (alin yakınları)
 
     müsteri_listesi = [] # normal müsteri listesi
 
@@ -240,13 +249,13 @@ class Ramada_Altin(Ramada_PLaza):
     
 deneme = Ramada_Altin("normal","kral_dairesi",2,"hulusi demir",2,1)
 deneme1 = Ramada_Altin("normal","kral_dairesi",2,"emirhan beyaz",2,3)
-deneme2 = Ramada_Altin("calisan","ikili_yatak",2,"Ali",2,3)
+deneme2 = Ramada_Altin("calisan","ikili_yatak",2,"Zeynep Çelik",2,3)
 
 deneme2.kayit_ekle()
 deneme2.fatura_yazdir()
 
-deneme1.kayit_ekle()
-deneme1.müsteriListesi_yazdir()
+# deneme1.kayit_ekle()
+# deneme1.müsteriListesi_yazdir()
 
 # deneme.kayit_ekle()
 # deneme.müsteriListesi_yazdir()

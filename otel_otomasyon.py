@@ -1,10 +1,8 @@
 class Ramada_PLaza:
 
-    def __init__(self,müsteri_tipi,kapasite,oda_tipi,oda_sayisi,müsteri_sayisi,ad):
+    def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad):
         self.müsteri_tipi = müsteri_tipi
-        self.kapasite = kapasite
         self.oda_tipi = oda_tipi
-        self.oda_sayisi = oda_sayisi
         self.müsteri_sayisi = müsteri_sayisi
         self.ad = ad
 
@@ -155,11 +153,9 @@ class Ramada_Altin(Ramada_PLaza):
    
     def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi,gün_sayisi):
 
+        super().__init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad)
+
         self.kat_numarasi = kat_numarasi
-        self.müsteri_sayisi = müsteri_sayisi
-        self.ad = ad
-        self.oda_tipi = oda_tipi
-        self.müsteri_tipi = müsteri_tipi
         self.gün_sayisi = gün_sayisi
 
     def kayit_ekle(self):

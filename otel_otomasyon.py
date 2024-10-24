@@ -10,12 +10,12 @@ class Ramada_PLaza:
         self.müsteri_sayisi = müsteri_sayisi
         self.ad = ad
 
-    def dolu_mu(self,oda_tipi):
-      if oda_tipi == 0 :
+    def dolu_mu(self,oda_numarasi):
+      if oda_numarasi == 0 :
         return True
 
-    def oda_rezarvasyon(self,oda_tipi):
-       if self.dolu_mu(oda_tipi) :
+    def oda_rezarvasyon(self,oda_numarasi):
+       if self.dolu_mu(oda_numarasi) :
           print("bos odamiz bulunmamamktadir")
        
        else: 
@@ -24,7 +24,7 @@ class Ramada_PLaza:
     
     def oda(self,oda_tipi,kat_numatasi): 
 
-        #  ikili_yatak = [[1,2],[3,4,5,6],[7,8,9]]  burda kat numarısıan göre bakıyoruz ve eğer o katta boş olmayan yer varsa ilk bulduğumuza atıyoruz
+        #  ikili_yatak = [[1,2],[3,4,5,6],[7,8,9]]  burda kat numarısıan göre bakıyoruz ve eğer o katta boş oylmayan er varsa ilk bulduğumuza atıyoruz
        
         döngü = -1
         for oda in oda_tipi[kat_numatasi]:
@@ -32,6 +32,12 @@ class Ramada_PLaza:
             if oda != 0 :
                 return döngü
         return -1
+
+    def liste_id(self,id,id_liste):
+        self.id = len(self.id_liste) +1
+        
+        id_liste.append(id)
+        return id_liste , id 
     
        
     def lokanta_rezarvasyon(self,ad,müsteri_listesi,lokanta_masa):
@@ -172,7 +178,7 @@ class Ramada_Altin(Ramada_PLaza):
 
     oda_numarasi = -1
 
-    id = 0 
+    id = 1
 
     id_liste = []
 
@@ -242,14 +248,14 @@ class Ramada_Altin(Ramada_PLaza):
 
                     if Ramada_PLaza.oda_rezarvasyon(self,self.ikili_yatak[self.kat_numarasi][self.oda_index]) == -1 : # 
                         self.oda_numarasi = self.ikili_yatak[self.kat_numarasi][self.oda_index]
-                        self.ikili_yatak[self.kat_numarasi][self.oda_index] = 0 # oda sayısını bir azaltıyoruz ram de ama azalıyor 
-                        
-                        self.id = random.randint(1,500)
+                        self.ikili_yatak[self.kat_numarasi][self.oda_index] = 0 # oda sayısını bir azaltıyoruz ram de ama azalıyor
 
-                        if self.id not in self.id_liste :
-                            self.id_liste.append(self.id)
+                        self.id = len(self.id_liste) + 1
 
-                        return self.oda_numarasi ,self.id
+                        self.id_liste.append(self.id)
+
+                        print("id: " , self.id , "liste:", self.id_liste)
+
 
             elif self.oda_tipi == "üclü_yatak" :
 
@@ -266,13 +272,12 @@ class Ramada_Altin(Ramada_PLaza):
                         self.oda_numarasi = self.üclü_yatak[self.kat_numarasi][self.oda_index]
                         self.üclü_yatak[self.kat_numarasi][self.oda_index] = 0 
                         
-                        self.id = random.randint(1,500)
+                        self.id = len(self.id_liste) +1 
 
-                        if self.id not in self.id_liste :
-                            self.id_liste.append(self.id)
+                        self.id_liste.append(self.id)
 
-                        return self.oda_numarasi ,self.id
-                        
+                        print("id:" , self.id , "liste:", self.id_liste)
+
 
             elif self.oda_tipi == "kral_dairesi" :
 
@@ -289,15 +294,11 @@ class Ramada_Altin(Ramada_PLaza):
                         self.oda_numarasi = self.kral_dairesi[self.kat_numarasi][self.oda_index]
                         self.kral_dairesi[self.kat_numarasi][self.oda_index] = 0
 
-                        self.id = random.randint(1,500)
+                        self.id = len(self.id_liste) +1 
 
-                        if self.id not in self.id_liste :
-                            self.id_liste.append(self.id)
+                        self.id_liste.append(self.id)
 
-                        return self.oda_numarasi ,self.id
-                        
-                       
-    
+                        print("id: " , self.id , "liste:", self.id_liste)
 
     def lokanta_rezarvasyon(self):
 
@@ -340,7 +341,7 @@ class Ramada_Altin(Ramada_PLaza):
 
     def lokanta_rezerve_iptal(self):
         
-        if self.lokanta_masa == Ramada_PLaza.lokanta_rezerve_iptal(self,self.ad,self.lokanta_rezerve,self.lokanta_masa):
+        if Ramada_PLaza.lokanta_rezerve_iptal(self,self.ad,self.lokanta_rezerve,self.lokanta_masa) == -1:
             print("lokanta rezerve bulunamadi")
         else: 
             self.lokanta_masa = Ramada_PLaza.lokanta_rezerve_iptal(self,self.ad,self.lokanta_rezerve,self.lokanta_masa)
@@ -366,8 +367,12 @@ class Ramada_Altin(Ramada_PLaza):
         if Ramada_PLaza.müsteri_kayit(self,self.ad,self.müsteri_listesi) == -1 :
 
             for musteri in self.müsteri_listesi:
+
+
                 if musteri.ad == self.ad: 
                     self.müsteri_listesi.remove(musteri) # müsteri listesinden adını sildik
+
+
 
             if self.oda_tipi == "ikili_yatak":
 
@@ -393,64 +398,24 @@ deneme.kayit_ekle()
 
 deneme2.kayit_ekle()
 
-deneme.bilgiler()
+# print(deneme.id)
+# print(deneme2.id)
 
-deneme.havuz_rezarvasyon()
+# print(deneme2.id_liste)
 
-deneme.fatura()
+# deneme.bilgiler()
 
-deneme.havuz_rezerve_iptal()
+# deneme.havuz_rezarvasyon()
 
-deneme.lokanta_rezarvasyon()
+# deneme.fatura()
 
-deneme.lokanta_rezerve_iptal()
+# deneme.havuz_rezerve_iptal()
 
-deneme.müsteriListesi_yazdir()
-
-print(deneme.id_liste)
-
-# oda_numrasi , kat_numarasi = deneme2.kayit_ekle()
-# deneme2.müsteriListesi_yazdir()
-
-# print(oda_numrasi)
-# print("---------------")
-
-# deneme2.fatura_yazdir()
-
-# oda_numrasi , kat_numarasi = deneme1.kayit_ekle()
-
-# deneme1.müsteriListesi_yazdir()
-# print("---------------")
-
-# oda_numrasi , kat_numarasi = deneme.kayit_ekle()
-
-# deneme.müsteriListesi_yazdir()
-
-# deneme.lokanta_rezarvasyonu()
-
-# deneme.havuz()
-
-# deneme.fatura_yazdir()
-
+# deneme.lokanta_rezarvasyon()
 
 # deneme.lokanta_rezerve_iptal()
 
-# deneme.havuz_rezerve_iptal()
+# deneme.müsteriListesi_yazdir()
 
-# deneme.havuz_rezerve_iptal()
+# print(deneme.id_liste)
 
-
-'''
-class müsteri:
-
-     
-    def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi):
-
-        self.kat_numarasi = kat_numarasi
-        self.müsteri_sayisi = müsteri_sayisi
-        self.ad = ad
-        self.oda_tipi = oda_tipi
-        self.müsteri_tipi = müsteri_tipi
-
-deneme2 = müsteri("normal","kral_dairesi",2,"hulusi demir",2) # müsteri_tipi ,oda_tipi, müsteri_sayisi, ad, kat_numarasi
-'''

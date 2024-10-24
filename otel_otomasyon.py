@@ -1,6 +1,5 @@
 import random
 
-
 class Ramada_PLaza:
 
     def __init__(self,müsteri_tipi,kapasite,oda_tipi,oda_sayisi,müsteri_sayisi,ad):
@@ -58,7 +57,7 @@ class Ramada_PLaza:
             else:
                 return +1 # müsteri yok demek
             
-    def havuz(self,ad,müsteri_listesi,havuz_doluluk):
+    def havuz_rezervasyon(self,ad,müsteri_listesi,havuz_doluluk):
 
         if havuz_doluluk >= 10:
             print("maalesef havuzumuz fazla dolu ")
@@ -147,23 +146,21 @@ class Ramada_PLaza:
 
 class müsteri_bilgileri:
 
-    def __init__(self,ad,oda_tipi,kat_numarasi,oda_numarasi,id,gün_sayisi,müsteri_sayisi,müsteri_tipi):
+    def __init__(self,ad,oda_tipi,kat_numarasi,gün_sayisi,müsteri_sayisi,müsteri_tipi):
         self.ad = ad
         self.oda_tipi = oda_tipi
         self.kat_numarasi = kat_numarasi
-        self.oda_numarasi = oda_numarasi
-        self.id = id
         self.gün_sayisi = gün_sayisi
         self.müsteri_sayisi = müsteri_sayisi
         self.müsteri_tipi = müsteri_tipi
     
-    def bilgiler(self):
+    def bilgiler(self,oda_numarasi,id):
 
         print(f"Müşteri Adı: {self.ad}\n"
                 f"Oda Tipi: {self.oda_tipi}\n"
                 f"Kat Numarası: {self.kat_numarasi}\n"
-                f"Oda Numarası: {self.oda_numarasi}\n"
-                f"ID: {self.id}\n"
+                f"Oda Numarası: {oda_numarasi}\n"
+                f"Kullanıcı İD: {id}\n"
                 f"Gün Sayısı: {self.gün_sayisi}\n"
                 f"Müşteri Sayısı: {self.müsteri_sayisi}\n"
                 f"Müşteri Tipi: {self.müsteri_tipi}")
@@ -173,11 +170,11 @@ class Ramada_Altin(Ramada_PLaza):
 
     # müsteri_bilgi = [["hulusi demir","kat numarasi","oda numarasi","oda tipi","id"]]
 
-    oda_numarasi = [[],[]]
+    oda_numarasi = -1
 
     id = 0 
 
-    id_liste = [-1]
+    id_liste = []
 
     havuz_rezerve = []
 
@@ -252,6 +249,8 @@ class Ramada_Altin(Ramada_PLaza):
                         if self.id not in self.id_liste :
                             self.id_liste.append(self.id)
 
+                        return self.oda_numarasi ,self.id
+
             elif self.oda_tipi == "üclü_yatak" :
 
                 if self.müsteri_sayisi >3 :
@@ -272,6 +271,9 @@ class Ramada_Altin(Ramada_PLaza):
                         if self.id not in self.id_liste :
                             self.id_liste.append(self.id)
 
+                        return self.oda_numarasi ,self.id
+                        
+
             elif self.oda_tipi == "kral_dairesi" :
 
                 if self.müsteri_sayisi >3 :
@@ -291,37 +293,41 @@ class Ramada_Altin(Ramada_PLaza):
 
                         if self.id not in self.id_liste :
                             self.id_liste.append(self.id)
+
+                        return self.oda_numarasi ,self.id
+                        
                        
     
 
-    def lokanta_rezarvasyonu(self):
+    def lokanta_rezarvasyon(self):
 
         self.lokanta_masa = Ramada_PLaza.lokanta_rezarvasyon(self,self.ad,self.müsteri_listesi,self.lokanta_masa)
 
         self.lokanta_rezerve.append(self.ad)
 
-    def havuz(self):
+    def havuz_rezarvasyon(self):
 
-        x = Ramada_PLaza.havuz(self,self.ad,self.müsteri_listesi,self.havuz_doluluk)
+        x = Ramada_PLaza.havuz_rezervasyon(self,self.ad,self.müsteri_listesi,self.havuz_doluluk)
 
-        if x!= -1 :
+        if x != -1 :
 
             self.havuz_rezerve.append(self.ad)
 
-            self.havuz_doluluk = Ramada_PLaza.havuz(self,self.ad,self.müsteri_listesi,self.havuz_doluluk)
+            self.havuz_doluluk = x
 
     def müsteriListesi_yazdir(self):
         print("Müsteri listesi: ", self.müsteri_listesi)
 
     #   def __init__(self,ad,oda_tipi,kat_numarasi,oda_numarasi,id,gün_sayisi,müsteri_sayisi,müsteri_tipi):
 
+    def bilgiler(self):
+
         musteri = müsteri_bilgileri(self.ad,self.oda_tipi,self.kat_numarasi,
-                                    self.oda_numarasi,self.id,self.gün_sayisi,
-                                    self.müsteri_sayisi,self.müsteri_tipi) 
+                                    self.gün_sayisi,self.müsteri_sayisi,self.müsteri_tipi) 
 
-        musteri.bilgiler()
+        musteri.bilgiler(self.oda_numarasi,self.id)
 
-    def fatura_yazdir(self):
+    def fatura(self):
 
         self.ödenecek_tutar = Ramada_PLaza.fatura(self,self.müsteri_tipi,self.oda_tipi,self.gün_sayisi,self.normal_müsteri,self.calisan_müsteri,self.müsteri_listesi,self.ad,self.calisan_liste)
 
@@ -376,36 +382,49 @@ class Ramada_Altin(Ramada_PLaza):
             print("müsteri kayitli degil")
 
 #  def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi,gün_sayisi):
+
           
     
 deneme = Ramada_Altin("normal","kral_dairesi",2,"hulusi demir",2,1) 
 deneme1 = Ramada_Altin("normal","üclü_yatak",2,"emirhan beyaz",2,3)
 deneme2 = Ramada_Altin("calisan","ikili_yatak",2,"Zeynep Çelik",2,3)
 
-deneme3 = müsteri_bilgileri( ad="Ahmet Yılmaz",
-    oda_tipi="Standart",
-    kat_numarasi=3,
-    oda_numarasi=305,
-    id=101,
-    gün_sayisi=5,
-    müsteri_sayisi=2,
-    müsteri_tipi="normal")
-
-# deneme3.bilgiler()
+deneme.kayit_ekle()
 
 deneme2.kayit_ekle()
-deneme2.müsteriListesi_yazdir()
-print("---------------")
+
+deneme.bilgiler()
+
+deneme.havuz_rezarvasyon()
+
+deneme.fatura()
+
+deneme.havuz_rezerve_iptal()
+
+deneme.lokanta_rezarvasyon()
+
+deneme.lokanta_rezerve_iptal()
+
+deneme.müsteriListesi_yazdir()
+
+print(deneme.id_liste)
+
+# oda_numrasi , kat_numarasi = deneme2.kayit_ekle()
+# deneme2.müsteriListesi_yazdir()
+
+# print(oda_numrasi)
+# print("---------------")
 
 # deneme2.fatura_yazdir()
 
-deneme1.kayit_ekle()
-deneme1.müsteriListesi_yazdir()
-print("---------------")
+# oda_numrasi , kat_numarasi = deneme1.kayit_ekle()
 
+# deneme1.müsteriListesi_yazdir()
+# print("---------------")
 
-deneme.kayit_ekle()
-deneme.müsteriListesi_yazdir()
+# oda_numrasi , kat_numarasi = deneme.kayit_ekle()
+
+# deneme.müsteriListesi_yazdir()
 
 # deneme.lokanta_rezarvasyonu()
 

@@ -1,27 +1,31 @@
 class Ramada_PLaza:
 
-    def __init__(self,müsteri_tipi,kapasite,oda_tipi,oda_sayisi,müsteri_sayisi,ad,TC):
+    def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,TC):
         self.müsteri_tipi = müsteri_tipi
-        self.kapasite = kapasite
         self.oda_tipi = oda_tipi
-        self.oda_sayisi = oda_sayisi
         self.müsteri_sayisi = müsteri_sayisi
         self.ad = ad
         self.TC = TC
 
-    def dolu_mu(self,oda_numarasi):
+        # Protected üyeler, aynı sınıftan veya alt sınıflardan erişime izin verir. isimlendirirken _(tek alt çizgi) kullanılır
+
+        # Private sınıf içi kullanım için tasarlanmıştır. İsimlendirirken __ (çift alt çizgi) kullanılır.
+
+        # public genel olarak her yere erişebilir İsimlendirirken hiçbir özel isim kullanılmaz 
+
+    def _dolu_mu(self,oda_numarasi):
       if oda_numarasi == 0 :
         return True
 
-    def oda_rezarvasyon(self,oda_numarasi):
-       if self.dolu_mu(oda_numarasi) :
+    def _oda_rezarvasyon(self,oda_numarasi):
+       if self._dolu_mu(oda_numarasi) :
           print("bos odamiz bulunmamamktadir")
        
        else: 
             print("oda rezarvasyonu basarili")
             return -1
     
-    def oda(self,oda_tipi,kat_numatasi): 
+    def _oda(self,oda_tipi,kat_numatasi): 
 
         #  ikili_yatak = [[1,2],[3,4,5,6],[7,8,9]]  burda kat numarısıan göre bakıyoruz ve eğer o katta boş oylmayan er varsa ilk bulduğumuza atıyoruz
        
@@ -32,7 +36,7 @@ class Ramada_PLaza:
                 return döngü
         return -1
 
-    def lokanta_rezarvasyon(self,TC,TC_listesi,lokanta_masa):
+    def _lokanta_rezarvasyon(self,TC,TC_listesi,lokanta_masa):
 
         if lokanta_masa == 0 :
             print("bos masa yok")
@@ -46,7 +50,7 @@ class Ramada_PLaza:
 
             print("masa rezarvasyon basarisiz") # basarisiz olması için müsterinin kayıt olamamış olmasıgerekmekte
                 
-    def müsteri_kayit(self,TC,TC_listesi):
+    def _müsteri_kayit(self,TC,TC_listesi):
 
         for müsteri in TC_listesi:
             if müsteri == TC:
@@ -54,7 +58,7 @@ class Ramada_PLaza:
             else: 
                 return +1 
             
-    def havuz_rezervasyon(self,TC,TC_listesi,havuz_doluluk):
+    def _havuz_rezarvasyon(self,TC,TC_listesi,havuz_doluluk):
 
         if havuz_doluluk >= 10:
             print("maalesef havuzumuz dolu ")
@@ -68,7 +72,7 @@ class Ramada_PLaza:
 
             print("havuz rezerve basarisiz") # basarisiz olması için müsterinin kayıt olamamış olması gerekmekte
     
-    def fatura(self,müsteri_tipi,oda_tipi,gün_sayisi,normal_müsteri,
+    def _fatura(self,müsteri_tipi,oda_tipi,gün_sayisi,normal_müsteri,
                calisan_müsteri,TC_listesi,TC,calisan_liste,ad):
 
         for müsteri in TC_listesi:
@@ -86,7 +90,7 @@ class Ramada_PLaza:
                 
 
                 elif müsteri_tipi == "calisan" :
-                    if self.calisan_kontrol(calisan_liste,ad):
+                    if self._calisan_kontrol(calisan_liste,ad):
                         if  oda_tipi == "kral_dairesi":
                             fiyat = calisan_müsteri[2]
                         elif oda_tipi == "üclü_yatak":
@@ -109,7 +113,7 @@ class Ramada_PLaza:
                 return fiyat,müsteri_tipi
         return -1
     
-    def calisan_kontrol(self,calisan_liste,ad):
+    def _calisan_kontrol(self,calisan_liste,ad):
 
         for sözlük in calisan_liste:
             for kontrol in sözlük:
@@ -117,7 +121,7 @@ class Ramada_PLaza:
                     return True
         return False
                
-    def lokanta_rezerve_iptal(self,TC,lokanta_rezerve,lokanta_masa):
+    def _lokanta_rezerve_iptal(self,TC,lokanta_rezerve,lokanta_masa):
 
         for musteri in lokanta_rezerve:
             if musteri == TC:
@@ -127,7 +131,7 @@ class Ramada_PLaza:
                 return lokanta_masa
         return -1 
 
-    def havuz_rezerve_iptal(self,TC,havuz_rezerve,havuz_doluluk):
+    def _havuz_rezerve_iptal(self,TC,havuz_rezerve,havuz_doluluk):
 
         for musteri in havuz_rezerve:
 
@@ -137,7 +141,7 @@ class Ramada_PLaza:
                 return havuz_doluluk
         return -1 
     
-    def TC_kontrol(self,TC):
+    def _TC_kontrol(self,TC):
 
         if len(TC) != 11:
             print("lütfen 11 haneli bir değer giriniz")
@@ -147,13 +151,13 @@ class Ramada_PLaza:
             print("lütfen  sadece rakam giriniz")
             return True
         
-    def kayit(self,TC,TC_listesi,oda_tipi,müsteri_sayisi,oda_index,ikili_yatak,
+    def _kayit(self,TC,TC_listesi,oda_tipi,müsteri_sayisi,oda_index,ikili_yatak,
               üclü_yatak,kral_dairesi,kat_numarasi,müsteri_listesi,ad):
             
-            if self.TC_kontrol(TC):
+            if self._TC_kontrol(TC):
                 return
             
-            elif self.müsteri_kayit(TC,TC_listesi) == -1 :
+            elif self._müsteri_kayit(TC,TC_listesi) == -1 :
                 print("müsteri zaten kayitli")
 
             else:
@@ -164,9 +168,9 @@ class Ramada_PLaza:
                         print("oda kapasitesinden fazla giriş yapmaya çalisiyorusunuz")
 
                     if müsteri_sayisi <=2 :
-                        oda_index = self.oda(ikili_yatak,kat_numarasi)   
+                        oda_index = self._oda(ikili_yatak,kat_numarasi)   
 
-                    if self.oda_rezarvasyon(ikili_yatak[kat_numarasi][oda_index]) == -1 : # 
+                    if self._oda_rezarvasyon(ikili_yatak[kat_numarasi][oda_index]) == -1 : # 
 
                         müsteri_listesi[TC] = ad
 
@@ -180,9 +184,9 @@ class Ramada_PLaza:
                         print("oda kapasitesinden fazla giriş yapmaya çalisiyorusunuz")
 
                     if müsteri_sayisi <=3:
-                        oda_index = self.oda(üclü_yatak,kat_numarasi)
+                        oda_index = self._oda(üclü_yatak,kat_numarasi)
 
-                    if self.oda_rezarvasyon(üclü_yatak[kat_numarasi][oda_index]) == -1 : # kral_dairesi = [[0],[0],[1,2,3,]]
+                    if self._oda_rezarvasyon(üclü_yatak[kat_numarasi][oda_index]) == -1 : # kral_dairesi = [[0],[0],[1,2,3,]]
 
                         müsteri_listesi[TC] = ad
 
@@ -196,9 +200,9 @@ class Ramada_PLaza:
                         print("oda kapasitesinden fazla giriş yapmaya çalisiyorusunuz")
 
                     if müsteri_sayisi <=3:
-                        oda_index = self.oda(kral_dairesi,kat_numarasi)
+                        oda_index = self._oda(kral_dairesi,kat_numarasi)
 
-                        if self.oda_rezarvasyon(kral_dairesi[kat_numarasi][oda_index]) == -1:
+                        if self._oda_rezarvasyon(kral_dairesi[kat_numarasi][oda_index]) == -1:
 
                             müsteri_listesi[TC] = ad
 
@@ -220,7 +224,7 @@ class müsteri_bilgileri:
         self.TC = TC  # GENEL KONTROL ARTIK TC İLE YAPILACAK
         self.oda_numarasi = oda_numarasi
     
-    def bilgiler(self):
+    def _bilgiler(self):
 
         if self.oda_numarasi == -1:
             print("önce kayıt yapmanız gerekmektedir")
@@ -241,114 +245,111 @@ class Ramada_Altin(Ramada_PLaza):
 
     # müsteri_bilgi = [["hulusi demir","kat numarasi","oda numarasi","oda tipi","id"]]
 
-    TC_listesi = []
+    __TC_listesi = []
 
-    oda_numarasi = -1
+    __oda_numarasi = -1
 
-    havuz_rezerve = []
+    __havuz_rezerve = []
 
-    lokanta_rezerve = []
+    __lokanta_rezerve = []
 
-    ödenecek_tutar = 0 # suanlık kişi bazlı olmasını planlıyorum 
+    __ödenecek_tutar = 0 # suanlık kişi bazlı olmasını planlıyorum 
 
-    normal_müsteri = [2500,3500,6500] # normal bir müsteri kayıt olmak istediğinde bu fiyatı ödeyecek   (BUNLAR GÜNLÜK TUTAR)
-
-    # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
-
-    calisan_müsteri = [1500,2000,6500] # çalısan yakını veya çalışan bir müşteri bu fiyatı ödeyecek (BUNLAR GÜNLÜK TUTAR)
+    __normal_müsteri = [2500,3500,6500] # normal bir müsteri kayıt olmak istediğinde bu fiyatı ödeyecek   (BUNLAR GÜNLÜK TUTAR)
 
     # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
 
-    calisan_liste =  [{"Ali Yılmaz":" 49279929506" , "Ayşe Kara" :"10303854194" , "Ahmet Demir":"55453320984"}
+    __calisan_müsteri = [1500,2000,6500] # çalısan yakını veya çalışan bir müşteri bu fiyatı ödeyecek (BUNLAR GÜNLÜK TUTAR)
+
+    # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
+
+    __calisan_liste =  [{"Ali Yılmaz":" 49279929506" , "Ayşe Kara" :"10303854194" , "Ahmet Demir":"55453320984"}
                       ,{"Zeynep Çelik":"87539683942", "Mehmet Yıldız":"63487662338", "Elif Aydın":"18937137638"}
                       ,{"Cem Şahin":"74676617442", "Fatma Öz":"79473205984", "Can Kurt":"28104801330"}]
     # ali (calisan) , ayse ahmet (alin yakınları)
 
-    müsteri_listesi = {} # normal müsteri listesi
+    __müsteri_listesi = {} # normal müsteri listesi
 
-    havuz_doluluk = 0 # havuz da aktif olarak kaç kişi olduğu yazıyor 
+    __havuz_doluluk = 0 # havuz da aktif olarak kaç kişi olduğu yazıyor 
 
-    lokanta_masa = 2 # lokonta da kaç masa müsait onu yazıyor
+    __lokanta_masa = 2 # lokonta da kaç masa müsait onu yazıyor
 
-    oda_index = 0 # hangi odanın kaçınçı indexte olduğunu söylüyor ona göre kullanıcı girdi yapıyor
+    __oda_index = 0 # hangi odanın kaçınçı indexte olduğunu söylüyor ona göre kullanıcı girdi yapıyor
 
-    ikili_yatak = [[1,2],[3,4,5,6],[7,8,9]]  # burda ikili yatak aslında kat numarası ve listenin içindeki indexe göre kaç tane oda olduğunu söylüyor
+    __ikili_yatak = [[1,2],[3,4,5,6],[7,8,9]]  # burda ikili yatak aslında kat numarası ve listenin içindeki indexe göre kaç tane oda olduğunu söylüyor
 
-    üclü_yatak = [[1],[2,3,4],[5,6]]
+    __üclü_yatak = [[1],[2,3,4],[5,6]]
 
-    kral_dairesi = [[0],[0],[1,2,3]]  # üc kisilik olacak fakat daha büyük olacak  (0 ya dolu ya da o katta oda yok anlamaına geliyor)
+    __kral_dairesi = [[0],[0],[1,2,3]]  # üc kisilik olacak fakat daha büyük olacak  (0 ya dolu ya da o katta oda yok anlamaına geliyor)
 
 
     # kapasite = ikili_yatak * 2 + üclü_yatak * 3 + kral_dairesi * 3  # odanın tüm kapasitesi
    
     def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,kat_numarasi,gün_sayisi,TC):
 
+        super().__init__(müsteri_tipi,oda_tipi,müsteri_sayisi,ad,TC)
+
         self.kat_numarasi = kat_numarasi
-        self.müsteri_sayisi = müsteri_sayisi
-        self.ad = ad
-        self.oda_tipi = oda_tipi
-        self.müsteri_tipi = müsteri_tipi
         self.gün_sayisi = gün_sayisi
-        self.TC = TC
 
     def kayit_ekle(self):
 
         if self.oda_tipi == "ikili_yatak":
 
-            liste = Ramada_PLaza.kayit(self,self.TC,self.TC_listesi,self.oda_tipi,self.müsteri_sayisi,
-                            self.oda_index,self.ikili_yatak,self.üclü_yatak,self.kral_dairesi,
-                            self.kat_numarasi,self.müsteri_listesi,self.ad)
+            liste = Ramada_PLaza._kayit(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+                            self.__oda_index,self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,
+                            self.kat_numarasi,self.__müsteri_listesi,self.ad)
             
-            liste[0] = self.oda_index
-            liste[1] = self.müsteri_listesi
-            liste[2] = self.TC_listesi
+            liste[0] = self.__oda_index
+            liste[1] = self.__müsteri_listesi
+            liste[2] = self.__TC_listesi
 
-            self.oda_numarasi = self.ikili_yatak[self.kat_numarasi][self.oda_index]
+            self.__oda_numarasi = self.__ikili_yatak[self.kat_numarasi][self.__oda_index]
     
-            self.ikili_yatak[self.kat_numarasi][self.oda_index] = 0 
+            self.__ikili_yatak[self.kat_numarasi][self.__oda_index] = 0 
 
         elif self.oda_tipi == "üclü_yatak":
 
-            liste = Ramada_PLaza.kayit(self,self.TC,self.TC_listesi,self.oda_tipi,self.müsteri_sayisi,
-                            self.oda_index,self.ikili_yatak,self.üclü_yatak,self.kral_dairesi,
-                            self.kat_numarasi,self.müsteri_listesi,self.ad)
+            liste = Ramada_PLaza._kayit(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+                            self.__oda_index,self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,
+                            self.kat_numarasi,self.__müsteri_listesi,self.ad)
             
-            liste[0] = self.oda_index
-            liste[1] = self.müsteri_listesi
-            liste[2] = self.TC_listesi
+            liste[0] = self.__oda_index
+            liste[1] = self.__müsteri_listesi
+            liste[2] = self.__TC_listesi
 
-            self.oda_numarasi = self.üclü_yatak[self.kat_numarasi][self.oda_index]
+            self.__oda_numarasi = self.__üclü_yatak[self.kat_numarasi][self.__oda_index]
 
-            self.üclü_yatak[self.kat_numarasi][self.oda_index] = 0 
+            self.__üclü_yatak[self.kat_numarasi][self.__oda_index] = 0 
         
         elif self.oda_tipi == "kral_dairesi":
 
-            liste = Ramada_PLaza.kayit(self,self.TC,self.TC_listesi,self.oda_tipi,self.müsteri_sayisi,
-                            self.oda_index,self.ikili_yatak,self.üclü_yatak,self.kral_dairesi,
-                            self.kat_numarasi,self.müsteri_listesi,self.ad)
+            liste = Ramada_PLaza._kayit(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+                            self.__oda_index,self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,
+                            self.kat_numarasi,self.__müsteri_listesi,self.ad)
             
-            liste[0] = self.oda_index
-            liste[1] = self.müsteri_listesi
-            liste[2] = self.TC_listesi
+            liste[0] = self.__oda_index
+            liste[1] = self.__müsteri_listesi
+            liste[2] = self.__TC_listesi
 
-            self.oda_numarasi = self.kral_dairesi[self.kat_numarasi][self.oda_index]
+            self.__oda_numarasi = self.__kral_dairesi[self.kat_numarasi][self.__oda_index]
 
-            self.kral_dairesi[self.kat_numarasi][self.oda_index] = 0
+            self.__kral_dairesi[self.kat_numarasi][self.__oda_index] = 0
 
     def lokanta_rezarvasyon(self):
 
-        self.lokanta_masa = Ramada_PLaza.lokanta_rezarvasyon(self,self.TC,self.TC_listesi,self.lokanta_masa)
+        self.__lokanta_masa = Ramada_PLaza._lokanta_rezarvasyon(self,self.TC,self.__TC_listesi,self.__lokanta_masa)
 
-        self.lokanta_rezerve.append(self.TC)
+        self.__lokanta_rezerve.append(self.TC)
 
     def havuz_rezarvasyon(self):
 
-        self.havuz_doluluk = Ramada_PLaza.havuz_rezervasyon(self,self.TC,self.TC_listesi,self.havuz_doluluk)
+        self.__havuz_doluluk = Ramada_PLaza._havuz_rezarvasyon(self,self.TC,self.__TC_listesi,self.__havuz_doluluk)
 
-        self.havuz_rezerve.append(self.TC)
+        self.__havuz_rezerve.append(self.TC)
 
     def MüsteriListesi_yazdir(self):
-        print("Müsteri listesi: ", self.müsteri_listesi)
+        print("Müsteri listesi: ", self.__müsteri_listesi)
 
 
     def bilgiler(self):
@@ -357,39 +358,39 @@ class Ramada_Altin(Ramada_PLaza):
 
         musteri = müsteri_bilgileri(self.ad,self.oda_tipi,self.kat_numarasi,
                                     self.gün_sayisi,self.müsteri_sayisi,
-                                    self.müsteri_tipi,self.TC,self.oda_numarasi) 
+                                    self.müsteri_tipi,self.TC,self.__oda_numarasi) 
 
-        musteri.bilgiler()
+        musteri._bilgiler()
 
     def fatura(self):
 
-        self.ödenecek_tutar,self.müsteri_tipi = Ramada_PLaza.fatura(self,self.müsteri_tipi,self.oda_tipi,
-                                                  self.gün_sayisi,self.normal_müsteri,
-                                                  self.calisan_müsteri,self.TC_listesi,
-                                                  self.TC,self.calisan_liste,self.ad)
+        self.__ödenecek_tutar,self.müsteri_tipi = Ramada_PLaza._fatura(self,self.müsteri_tipi,self.oda_tipi,
+                                                  self.gün_sayisi,self.__normal_müsteri,
+                                                  self.__calisan_müsteri,self.__TC_listesi,
+                                                  self.TC,self.__calisan_liste,self.ad)
 
-        if self.ödenecek_tutar == -1:
+        if self.__ödenecek_tutar == -1:
             print("müsteri kayitli degil")
         
         else:
         
-            print(f"sayin {self.ad} ödenemiz gereken tutar {self.ödenecek_tutar}" )
+            print(f"sayin {self.ad} ödenemiz gereken tutar {self.__ödenecek_tutar}" )
 
     def lokanta_rezerve_iptal(self):
         
-        if Ramada_PLaza.lokanta_rezerve_iptal(self,self.TC,self.lokanta_rezerve,self.lokanta_masa) == -1:
+        if Ramada_PLaza._lokanta_rezerve_iptal(self,self.TC,self.__lokanta_rezerve,self.__lokanta_masa) == -1:
             print("lokanta rezerve bulunamadi")
         else: 
-            self.lokanta_masa = Ramada_PLaza.lokanta_rezerve_iptal(self,self.TC,self.lokanta_rezerve,self.lokanta_masa)
+            self.__lokanta_masa = Ramada_PLaza._lokanta_rezerve_iptal(self,self.TC,self.__lokanta_rezerve,self.__lokanta_masa)
             print("lokanta rezerve iptal edildi")
 
     def havuz_rezerve_iptal(self):
 
-        if Ramada_PLaza.havuz_rezerve_iptal(self,self.TC,self.havuz_rezerve,self.havuz_doluluk) == -1:
+        if Ramada_PLaza._havuz_rezerve_iptal(self,self.TC,self.__havuz_rezerve,self.__havuz_doluluk) == -1:
             print("havuz rezerve bulunamadi")
 
         else:
-            self.havuz_doluluk = Ramada_PLaza.havuz_rezerve_iptal(self,self.TC,self.havuz_rezerve,self.havuz_doluluk)
+            self.__havuz_doluluk = Ramada_PLaza._havuz_rezerve_iptal(self,self.TC,self.__havuz_rezerve,self.__havuz_doluluk)
             print("havuz rezerve iptal edildi")
 
     def kayit_sil(self): 
@@ -401,9 +402,8 @@ class Ramada_Altin(Ramada_PLaza):
         # bunun için de ad ile müsteri listesini kontrol edeçeğiz
 
         kontrol = -1
-
    
-        for müsteri in self.TC_listesi:
+        for müsteri in self.__TC_listesi:
 
             if müsteri == self.TC:
 
@@ -411,22 +411,22 @@ class Ramada_Altin(Ramada_PLaza):
 
                 musteri = müsteri_bilgileri(self.ad,self.oda_tipi,self.kat_numarasi,
                                             self.gün_sayisi,self.müsteri_sayisi,
-                                            self.müsteri_tipi,self.TC,self.oda_numarasi) 
+                                            self.müsteri_tipi,self.TC,self.__oda_numarasi) 
                 
                 if musteri.oda_tipi == "ikili_yatak":
-                    self.ikili_yatak[self.kat_numarasi][self.oda_index] = self.oda_numarasi
+                    self.__ikili_yatak[self.kat_numarasi][self.__oda_index] = self.__oda_numarasi
 
                 elif musteri.oda_tipi == "üclü_yatak":
-                    self.üclü_yatak[musteri.kat_numarasi][self.oda_index] = musteri.oda_numarasi
+                    self.__üclü_yatak[musteri.kat_numarasi][self.__oda_index] = musteri.oda_numarasi
                     
                 elif musteri.oda_tipi == "kral_dairesi":
-                    self.kral_dairesi[musteri.kat_numarasi][self.oda_index] = musteri.oda_numarasi
+                    self.__kral_dairesi[musteri.kat_numarasi][self.__oda_index] = musteri.oda_numarasi
 
-                Ramada_PLaza.havuz_rezerve_iptal(self,self.TC,self.havuz_rezerve,self.havuz_doluluk)
-                Ramada_PLaza.lokanta_rezerve_iptal(self,self.TC,self.lokanta_rezerve,self.lokanta_masa)
+                Ramada_PLaza._havuz_rezerve_iptal(self,self.TC,self.__havuz_rezerve,self.__havuz_doluluk)
+                Ramada_PLaza._lokanta_rezerve_iptal(self,self.TC,self.__lokanta_rezerve,self.__lokanta_masa)
 
-                self.TC_listesi.remove(self.TC)
-                del self.müsteri_listesi[self.TC]
+                self.__TC_listesi.remove(self.TC)
+                del self.__müsteri_listesi[self.TC]
 
                 print("kayit silme işlemi başarili")
 
@@ -444,8 +444,9 @@ deneme.kayit_ekle()
 deneme1.kayit_ekle()
 deneme2.kayit_ekle()
 
+# print(deneme.__kral_dairesi) # buna erişemem çünkü private bir şekilde korunmuş
 
-deneme.havuz_rezarvasyon()
+deneme.havuz_rezarvasyon() 
 
 deneme.lokanta_rezarvasyon()
 

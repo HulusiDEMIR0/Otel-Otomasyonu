@@ -69,7 +69,7 @@ class Ramada_PLaza:
             print("havuz rezerve basarisiz") # basarisiz olması için müsterinin kayıt olamamış olması gerekmekte
     
     def fatura(self,müsteri_tipi,oda_tipi,gün_sayisi,normal_müsteri,
-               calisan_müsteri,TC_listesi,TC,calisan_liste):
+               calisan_müsteri,TC_listesi,TC,calisan_liste,ad):
 
         for müsteri in TC_listesi:
             if müsteri == TC:
@@ -86,7 +86,7 @@ class Ramada_PLaza:
                 
 
                 elif müsteri_tipi == "calisan" :
-                    if self.calisan_kontrol(TC,calisan_liste):
+                    if self.calisan_kontrol(calisan_liste,ad):
                         if  oda_tipi == "kral_dairesi":
                             fiyat = calisan_müsteri[2]
                         elif oda_tipi == "üclü_yatak":
@@ -106,16 +106,17 @@ class Ramada_PLaza:
 
                     fiyat = fiyat * gün_sayisi 
                 
-                return fiyat
+                return fiyat,müsteri_tipi
         return -1
     
-    def calisan_kontrol(self,TC,calisan_liste):
+    def calisan_kontrol(self,calisan_liste,ad):
 
-        if TC in calisan_liste: 
-            return True
-        else:
-            return False
-    
+        for sözlük in calisan_liste:
+            for kontrol in sözlük:
+                if kontrol == ad:
+                    return True
+        return False
+               
     def lokanta_rezerve_iptal(self,TC,lokanta_rezerve,lokanta_masa):
 
         for musteri in lokanta_rezerve:
@@ -258,7 +259,9 @@ class Ramada_Altin(Ramada_PLaza):
 
     # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
 
-    calisan_liste =  [["Ali Yılmaz", "Ayşe Kara", "Ahmet Demir"],["Zeynep Çelik", "Mehmet Yıldız", "Elif Aydın"],["Cem Şahin", "Fatma Öz", "Can Kurt"] ]
+    calisan_liste =  [{"Ali Yılmaz":" 49279929506" , "Ayşe Kara" :"10303854194" , "Ahmet Demir":"55453320984"}
+                      ,{"Zeynep Çelik":"87539683942", "Mehmet Yıldız":"63487662338", "Elif Aydın":"18937137638"}
+                      ,{"Cem Şahin":"74676617442", "Fatma Öz":"79473205984", "Can Kurt":"28104801330"}]
     # ali (calisan) , ayse ahmet (alin yakınları)
 
     müsteri_listesi = {} # normal müsteri listesi
@@ -360,10 +363,10 @@ class Ramada_Altin(Ramada_PLaza):
 
     def fatura(self):
 
-        self.ödenecek_tutar = Ramada_PLaza.fatura(self,self.müsteri_tipi,self.oda_tipi,
+        self.ödenecek_tutar,self.müsteri_tipi = Ramada_PLaza.fatura(self,self.müsteri_tipi,self.oda_tipi,
                                                   self.gün_sayisi,self.normal_müsteri,
                                                   self.calisan_müsteri,self.TC_listesi,
-                                                  self.TC,self.calisan_liste)
+                                                  self.TC,self.calisan_liste,self.ad)
 
         if self.ödenecek_tutar == -1:
             print("müsteri kayitli degil")
@@ -441,11 +444,6 @@ deneme.kayit_ekle()
 deneme1.kayit_ekle()
 deneme2.kayit_ekle()
 
-# print(   deneme.oda_index,
-#         deneme.oda_numarasi,
-#         deneme.ikili_yatak,
-#         deneme.müsteri_listesi,
-#          deneme.TC_listesi)
 
 deneme.havuz_rezarvasyon()
 
@@ -461,8 +459,8 @@ deneme.lokanta_rezerve_iptal()
 
 deneme.MüsteriListesi_yazdir()
 
-# deneme.kayit_sil()
-# deneme1.kayit_sil()
-# deneme2.kayit_sil()
+deneme.kayit_sil()
+deneme1.kayit_sil()
+deneme2.kayit_sil()
 
 

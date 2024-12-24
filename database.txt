@@ -1,0 +1,9 @@
+TC_Listesi:
+Havuz_Rezerve:
+lokanta_Rezerve:
+İkili_Yatak:[[1,2],[3,4,5,6],[7,8,9]]
+Üclü_Yatak:[[1],[2,3,4],[5,6]]
+Kral_Dairesi:[[0],[0],[1,2,3]]
+Lokanta_Masa:0
+Havuz_Doluluk:0
+calisan_liste:Ali Yılmaz 49279929506,Ayşe Kara 10303854194,Ahmet Demir 55453320984,Zeynep Çelik 87539683942,Mehmet Yıldız 63487662338,Elif Aydın 18937137638

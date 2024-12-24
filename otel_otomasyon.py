@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 class Ramada_PLaza:
 
     def __init__(self,müsteri_tipi,oda_tipi,müsteri_sayisi,ad,TC):
@@ -12,6 +13,11 @@ class Ramada_PLaza:
         # Private sınıf içi kullanım için tasarlanmıştır. İsimlendirirken __ (çift alt çizgi) kullanılır.
 
         # public genel olarak her yere erişebilir İsimlendirirken hiçbir özel isim kullanılmaz 
+
+    # abstract  metot 
+    @abstractmethod
+    def hosgeldiniz():
+        pass
 
     def _dolu_mu(self,oda_numarasi):
       if oda_numarasi == 0 :
@@ -113,9 +119,9 @@ class Ramada_PLaza:
 
                 return fiyat,müsteri_tipi
         return -1
-    
-    def _calisan_kontrol(self,calisan_liste,ad):
-
+  
+    @staticmethod
+    def _calisan_kontrol(calisan_liste, ad):
         for sözlük in calisan_liste:
             for kontrol in sözlük:
                 if kontrol == ad:
@@ -141,26 +147,13 @@ class Ramada_PLaza:
                 havuz_doluluk +=1
                 return havuz_doluluk
         return -1 
-    
-    def _TC_kontrol(self,TC):
-
-        if len(TC) != 11:
-            print("lütfen 11 haneli bir değer giriniz")
-            return True
         
-        if TC.isdigit() == False:
-            print("lütfen  sadece rakam giriniz")
-            return True
-        
-    def _kayit_ekle(self,TC,TC_listesi,oda_tipi,müsteri_sayisi,ikili_yatak,
+    def kayit_ekle(self,TC,TC_listesi,oda_tipi,müsteri_sayisi,ikili_yatak,
               üclü_yatak,kral_dairesi,kat_numarasi,müsteri_listesi,ad):
             
             oda_numarasi = -1
             
-            if self._TC_kontrol(TC):
-                return False
-            
-            elif self._müsteri_kayit(TC,TC_listesi) == -1 :
+            if self._müsteri_kayit(TC,TC_listesi) == -1 :
                 print("müsteri zaten kayitli")
                 return False
 
@@ -278,7 +271,7 @@ class Ramada_Altin(Ramada_PLaza):
 
     # index0 = ikili_yatak / index1 = üclü_yatak  / index2 = kral_dairesi
 
-    __calisan_liste =  [{"Ali Yılmaz":" 49279929506" , "Ayşe Kara" :"10303854194" , "Ahmet Demir":"55453320984"}
+    calisan_liste =  [{"Ali Yılmaz":" 49279929506" , "Ayşe Kara" :"10303854194" , "Ahmet Demir":"55453320984"}
                       ,{"Zeynep Çelik":"87539683942", "Mehmet Yıldız":"63487662338", "Elif Aydın":"18937137638"}
                       ,{"Cem Şahin":"74676617442", "Fatma Öz":"79473205984", "Can Kurt":"28104801330"}]
     
@@ -307,11 +300,14 @@ class Ramada_Altin(Ramada_PLaza):
         self.kat_numarasi = kat_numarasi
         self.gün_sayisi = gün_sayisi
 
+    def hosgeldiniz(self):
+        print("Ramada Plaza'nın otel zincirine bağlı olan Ramada Altına hoşgelidiniz")
+
     def kayit_ekle(self):
 
         if self.oda_tipi == "ikili_yatak":
 
-            liste = Ramada_PLaza._kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+            liste = Ramada_PLaza.kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
                             self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,self.kat_numarasi,self.__müsteri_listesi,self.ad)
         
             if liste != False:
@@ -325,7 +321,7 @@ class Ramada_Altin(Ramada_PLaza):
 
         elif self.oda_tipi == "üclü_yatak":
 
-            liste = Ramada_PLaza._kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+            liste = Ramada_PLaza.kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
                             self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,self.kat_numarasi,self.__müsteri_listesi,self.ad)
             
             if liste != False:
@@ -337,7 +333,7 @@ class Ramada_Altin(Ramada_PLaza):
 
         elif self.oda_tipi == "kral_dairesi":
 
-            liste = Ramada_PLaza._kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
+            liste = Ramada_PLaza.kayit_ekle(self,self.TC,self.__TC_listesi,self.oda_tipi,self.müsteri_sayisi,
                                 self.__ikili_yatak,self.__üclü_yatak,self.__kral_dairesi,self.kat_numarasi,self.__müsteri_listesi,self.ad)
             
             if liste != False:
@@ -359,8 +355,6 @@ class Ramada_Altin(Ramada_PLaza):
 
         self.__havuz_rezerve.append(self.TC)
 
-    def MüsteriListesi_yazdir(self):
-        print("Müsteri listesi: ", self.__müsteri_listesi)
 
     def bilgiler(self):
 
@@ -369,7 +363,7 @@ class Ramada_Altin(Ramada_PLaza):
         self.__ödenecek_tutar,self.müsteri_tipi = Ramada_PLaza._fatura(self,self.müsteri_tipi,self.oda_tipi,
                                                   self.gün_sayisi,self.__normal_müsteri,
                                                   self.__calisan_müsteri,self.__TC_listesi,
-                                                  self.TC,self.__calisan_liste,self.ad)
+                                                  self.TC,self.calisan_liste,self.ad)
         
         print(self.oda_numarasi)
 
@@ -384,7 +378,7 @@ class Ramada_Altin(Ramada_PLaza):
         self.__ödenecek_tutar,self.müsteri_tipi = Ramada_PLaza._fatura(self,self.müsteri_tipi,self.oda_tipi,
                                                   self.gün_sayisi,self.__normal_müsteri,
                                                   self.__calisan_müsteri,self.__TC_listesi,
-                                                  self.TC,self.__calisan_liste,self.ad)
+                                                  self.TC,self.calisan_liste,self.ad)
 
         if self.__ödenecek_tutar == -1:
             print("müsteri kayitli degil")
@@ -419,6 +413,12 @@ class Ramada_Altin(Ramada_PLaza):
         if kontrol == 0 : print("kayit silme işlemi basarili")
 
         else: print("kayit silme işlmemi başarisiz")
+
+    @classmethod
+    def print_names(cls):
+        for grup in Ramada_Altin.calisan_liste:
+            for isim in grup.keys():
+                print(isim)
 
 class müsteri:
 
@@ -455,14 +455,26 @@ class müsteri_kayit:
 
     def __init__(self):
         
-        print("OTELİMİZE HOS GELDİNİZ")
+        Ramada_Altin.hosgeldiniz(self)
 
         kontrol = True
 
         while(kontrol):
         
             ad = input("Ad Soyad: ")
-            TC = input("TC Kimlik Numarası: ")
+            while (kontrol):
+
+                tc_kimlik = input("TC Kimlik Numarası: ")   
+
+                if len(tc_kimlik) != 11:
+                    print("lütfen 11 haneli bir değer giriniz")
+                    kontrol = True
+            
+                elif tc_kimlik.isdigit() == False:
+                    print("lütfen  sadece rakam giriniz")
+                    kontrol = True
+                
+                else: kontrol = False  
 
             musteri_tipi = input("Müşteri Tipi (calisan veya normal ): ")
             oda_tipi = input("Oda Tipi (ikili_yatak ,üclü_yatak veya kral_dairesi): ")
@@ -470,48 +482,20 @@ class müsteri_kayit:
             kat_numarasi = int(input("Kat Numarası: "))
             gun_sayisi = int(input("Kalış Süresi (Gün): "))
 
-            kullaici = Ramada_Altin(musteri_tipi,oda_tipi,musteri_sayisi,ad,kat_numarasi,gun_sayisi,TC)
+            kullaici = Ramada_Altin(musteri_tipi,oda_tipi,musteri_sayisi,ad,kat_numarasi,gun_sayisi,tc_kimlik)
             kullaici.kayit_ekle()
 
             kontroll = input("baska bir kullanıcı kayit etmek ister misiniz (True veya False): ")
             if kontroll.lower() == "false":
                 kontrol = False
         
-        # kullaici.bilgiler()
+        kullaici.lokanta_rezarvasyon()
+        kullaici.havuz_rezarvasyon()
+        kullaici.fatura()
+        kullaici.bilgiler()
+        kullaici.lokanta_rezerve_iptal()
+        kullaici.havuz_rezerve_iptal()
         kullaici.kayit_sil()
+        Ramada_Altin.print_names()
 
 deneme = müsteri_kayit()
-
-# deneme = Ramada_Altin("calisan","ikili_yatak",2,"Zeynep Çelik",2,3,"34578945234")
-# deneme1 = Ramada_Altin("normal","üclü_yatak",2,"emirhan beyaz",2,3,"54820371946")
-# deneme2 = Ramada_Altin("normal","kral_dairesi",2,"hulusi demir",2,1,"27964583108")
-# deneme3 = Ramada_Altin("normal","kral_dairesi",3,"yusuf mert çınar",2,4,"29728687256")
-
-# deneme.kayit_ekle()
-# deneme1.kayit_ekle()
-# deneme2.kayit_ekle()
-# deneme3.kayit_ekle()
-
-# # print(deneme.__kral_dairesi) # buna erişemem çünkü private bir şekilde korunmuş
-
-# deneme.havuz_rezarvasyon() 
-
-# deneme.lokanta_rezarvasyon()
-
-# deneme.bilgiler()
-
-# deneme.fatura()
-
-# deneme.havuz_rezerve_iptal()
-
-# deneme.lokanta_rezerve_iptal()
-
-# deneme.MüsteriListesi_yazdir()
-
-# deneme.kayit_sil()
-# deneme1.kayit_sil()
-# deneme2.kayit_sil()
-
-#  @classmethod class daki methotları örnek adı ile çağırırken artık direkt class adı ile cağırmamızı da sağlar ve parantez içerisine (self) , yerine (cls) yazmamız gerekir
-
-#  @staticmethod parantez içerisinde herhangi bir deger almayan ve hem class adıyla hem de örnek adıyla çağırılabilen methoddur. basit bir deger döndürür class üzerinde etkisi yoktur
